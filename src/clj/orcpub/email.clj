@@ -34,7 +34,7 @@
 
 (defn send-verification-email [base-url {:keys [email username first-and-last-name]} verification-key]
   (postal/send-message (email-cfg)
-                       {:from "OrcPub Team <no-reply@orcpub.com>"
+                       {:from "OrcPub Team <no-reply@orcpub.fosoterritory.com>"
                         :to email
                         :subject "OrcPub Email Verification"
                         :body (verification-email
@@ -67,7 +67,7 @@
 
 (defn send-reset-email [base-url {:keys [email username first-and-last-name]} reset-key]
   (postal/send-message (email-cfg)
-                       {:from "OrcPub Team <no-reply@orcpub.com>"
+                       {:from "OrcPub Team <no-reply@orcpub.fosoterritory.com>"
                         :to email
                         :subject "OrcPub Password Reset"
                         :body (reset-password-email

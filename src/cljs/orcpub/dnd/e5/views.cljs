@@ -427,11 +427,11 @@
        [:div.flex.w-100-p.align-items-end
         {:class-name (if mobile? "justify-cont-s-b" "justify-cont-s-b")}
         [:div
-         [:a {:href "https://www.patreon.com/orcpub" :target :_blank}
+         [:a {:href "https://paypal.me/pools/c/8bzG0CQHwK" :target :_blank}
           [:img.h-32.m-l-10.m-b-5.pointer.opacity-7.hover-opacity-full
            {:src (if mobile?
-                   "https://c5.patreon.com/external/logo/downloads_logomark_color_on_navy.png"
-                   "https://c5.patreon.com/external/logo/become_a_patron_button.png")}]]
+                   "https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif"
+                   "https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif")}]]
          (if (not mobile?)
            [:div.main-text-color.p-10
             (social-icon "facebook" "https://www.facebook.com/orcpub")

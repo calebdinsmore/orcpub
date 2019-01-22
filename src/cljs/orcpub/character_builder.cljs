@@ -1878,7 +1878,7 @@
       [desktop-or-tablet-columns device-type])))
 
 (def patreon-link-props
-  {:href "https://www.patreon.com/user?u=5892323" :target "_blank"})
+  {:href "https://paypal.me/pools/c/8bzG0CQHwK" :target "_blank"})
 
 (defn al-legality []
   (let [expanded? (r/atom false)]
