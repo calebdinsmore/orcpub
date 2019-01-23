@@ -1878,7 +1878,7 @@
       [desktop-or-tablet-columns device-type])))
 
 (def patreon-link-props
-  {:href "https://paypal.me/pools/c/8bzG0CQHwK" :target "_blank"})
+  {:href "https://www.patreon.com/CalebDinsmore" :target "_blank"})
 
 (defn al-legality []
   (let [expanded? (r/atom false)]
