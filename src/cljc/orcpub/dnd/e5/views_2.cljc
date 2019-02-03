@@ -57,7 +57,7 @@
    [:div
     [:div {:style (style {:margin-bottom "5px"})} "Icons made by Lorc, Caduceus, and Delapouite. Available on " [:a.orange {:href "http://game-icons.net"} "http://game-icons.net"]]]
    [:div.m-l-10 {:style (style {:margin-left "10px"})}
-    [:a {:style (style orange-style) :href "https://github.com/larrychristensen/orcpub/issues" :target :_blank} "Feedback/Bug Reports"]]
+    [:a {:style (style orange-style) :href "https://github.com/cjdinsmore/orcpub/issues" :target :_blank} "Feedback/Bug Reports"]]
    [:div.m-l-10.m-r-10.p-10
     {:style (style {:margin-left "10px"
                     :margin-right "10px"
@@ -65,7 +65,7 @@
     [:a {:style (style orange-style) :href "/privacy-policy" :target :_blank} "Privacy Policy"]
     [:a.m-l-5 {:style (orange-style {:margin-left "5px"}) :href "/terms-of-use" :target :_blank} "Terms of Use"]]
    [:div.legal-footer
-    [:p "© 2019 OrcPub" [:span {:style (style {:margin-left "20px"})} "Contact: " [:a {:href "mailto:redorc@orcpub.com"} "redorc@orcpub.com"]]]
+    [:p "© 2019 OrcPub" [:span {:style (style {:margin-left "20px"})} "Contact: " [:a {:href "mailto:caleb@calebdinsmore.com"} "caleb@calebdinsmore.com"]]]
     [:p "Wizards of the Coast, Dungeons & Dragons, D&D, and their logos are trademarks of Wizards of the Coast LLC in the United States and other countries. © 2019 Wizards. All Rights Reserved. OrcPub.com is not affiliated with, endorsed, sponsored, or specifically approved by Wizards of the Coast LLC."]]])
 
 (defn splash-page []
@@ -83,9 +83,12 @@
      {:style (style {:font-family "sans-serif"})}
      [:div
       {:style (style {:display :flex
-                      :justify-content :space-around})}
+                      :justify-content :center})}
       [:img
        {:src "/image/orcpub-logo.svg"
+        :style (style {:height "70px"})}]
+      [:img
+       {:src "/image/ff-logo-white.png"
         :style (style {:height "70px"})}]]
      [:div
       {:style (style {:text-align :center
@@ -93,7 +96,7 @@
                       :font-weight :bold
                       :font-size "14px"
                       :height "48px"})}
-      "version 2.0 - community edition"]
+      "version 2.0 - hosted for friends by FilipinoFire Software"]
      [:div
       {:style (style
                {:display :flex
