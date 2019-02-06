@@ -622,6 +622,7 @@
    ::char5e/ideals char5e/ideals
    ::char5e/bonds char5e/bonds
    ::char5e/flaws char5e/flaws
+   ::char5e/dong-length char5e/dong-length
    ::char5e/description char5e/description
    ::char5e/notes char5e/notes
    ::char5e/critical-hit-values char5e/critical-hit-values

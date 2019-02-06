@@ -266,6 +266,7 @@
      ::char5e/skin
      ::char5e/height
      ::char5e/flaws
+     ::char5e/dong-length
      ::char5e/faction-image-url-failed
      ::char5e/image-url
      ::char5e/description
