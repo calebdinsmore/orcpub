@@ -1746,6 +1746,7 @@
   (let [entity-values @(subscribe [:entity-values])
         image-url @(subscribe [::char5e/image-url])
         image-url-failed @(subscribe [::char5e/image-url-failed])
+        player-name @(subscribe [::char5e/player-name])
         faction-image-url @(subscribe [::char5e/faction-image-url])
         faction-image-url-failed @(subscribe [::char5e/faction-image-url-failed])]
     [:div.flex-grow-1
@@ -1785,7 +1786,11 @@
        [character-input entity-values ::char5e/eyes]]
       [:div.field.flex-grow-1.m-1-2
        [:span.personality-label.f-s-18 "Skin Color"]
-       [character-input entity-values ::char5e/skin]]]
+       [character-input entity-values ::char5e/skin]]
+      (if (re-find #"🍆" (if player-name player-name ""))
+        [:div.field.flex-grow-1.m-1-2
+         [:span.personality-label.f-s-18 "Dong Length"]
+         [character-input entity-values ::char5e/dong-length]])]
      [:div.field
       [:span.personality-label.f-s-18 "Personality Trait 1"]
       [character-textarea entity-values ::char5e/personality-trait-1]]

@@ -252,20 +252,20 @@
 (defn built-template [template selected-plugin-options]
   template
   #_(let [selected-plugins (map
-                          :selections
-                          (filter
-                           (fn [{:keys [key]}]
-                             (selected-plugin-options key))
-                           t5e/plugins))]
-    (if (seq selected-plugins)
-      (update template
-              ::t/selections
-              (fn [s]
-                (apply
-                 entity/merge-multiple-selections
-                 s
-                 selected-plugins)))
-      template)))
+                            :selections
+                            (filter
+                             (fn [{:keys [key]}]
+                               (selected-plugin-options key))
+                             t5e/plugins))]
+      (if (seq selected-plugins)
+        (update template
+                ::t/selections
+                (fn [s]
+                  (apply
+                   entity/merge-multiple-selections
+                   s
+                   selected-plugins)))
+        template)))
 
 (reg-sub
  :built-template
@@ -342,49 +342,49 @@
       {})))
 
 (reg-sub-raw
-  ::char5e/characters
-  (fn [app-db [_ login-optional?]]
-    (go (dispatch [:set-loading true])
-        (let [response (<! (http/get (url-for-route routes/dnd-e5-char-summary-list-route)
-                                     {:headers (auth-headers @app-db)}))]
-          (dispatch [:set-loading false])
-          (case (:status response)
-            200 (dispatch [::char5e/set-characters (-> response :body)])
-            401 (if (not login-optional?)
-                  (dispatch [:route-to-login]))
-            500 (dispatch (events/show-generic-error)))))
-    (ra/make-reaction
-     (fn [] (get @app-db ::char5e/characters [])))))
+ ::char5e/characters
+ (fn [app-db [_ login-optional?]]
+   (go (dispatch [:set-loading true])
+       (let [response (<! (http/get (url-for-route routes/dnd-e5-char-summary-list-route)
+                                    {:headers (auth-headers @app-db)}))]
+         (dispatch [:set-loading false])
+         (case (:status response)
+           200 (dispatch [::char5e/set-characters (-> response :body)])
+           401 (if (not login-optional?)
+                 (dispatch [:route-to-login]))
+           500 (dispatch (events/show-generic-error)))))
+   (ra/make-reaction
+    (fn [] (get @app-db ::char5e/characters [])))))
 
 (reg-sub-raw
-  ::party5e/parties
-  (fn [app-db [_ login-optional?]]
-    (go (dispatch [:set-loading true])
-        (let [response (<! (http/get (url-for-route routes/dnd-e5-char-parties-route)
-                                     {:headers (auth-headers @app-db)}))]
-          (dispatch [:set-loading false])
-          (case (:status response)
-            200 (dispatch [::party5e/set-parties (-> response :body)])
-            401 (if (not login-optional?)
-                  (dispatch [:route-to-login]))
-            500 (dispatch (events/show-generic-error)))))
-    (ra/make-reaction
-     (fn [] (get @app-db ::char5e/parties [])))))
+ ::party5e/parties
+ (fn [app-db [_ login-optional?]]
+   (go (dispatch [:set-loading true])
+       (let [response (<! (http/get (url-for-route routes/dnd-e5-char-parties-route)
+                                    {:headers (auth-headers @app-db)}))]
+         (dispatch [:set-loading false])
+         (case (:status response)
+           200 (dispatch [::party5e/set-parties (-> response :body)])
+           401 (if (not login-optional?)
+                 (dispatch [:route-to-login]))
+           500 (dispatch (events/show-generic-error)))))
+   (ra/make-reaction
+    (fn [] (get @app-db ::char5e/parties [])))))
 
 (reg-sub-raw
-  :user
-  (fn [app-db [_ required?]]
-    (go (let [hdrs (auth-headers @app-db)
-              response (<! (http/get (url-for-route routes/user-route) {:headers hdrs}))]
-          (case (:status response)
-            200 nil
-            401 (do
-                  (dispatch [:set-user-data (dissoc (:user-data @app-db) :user-data :token)])
-                  (if required?
-                    (dispatch [:route-to-login])))
-            500 (if required? (dispatch (events/show-generic-error))))))
-    (ra/make-reaction
-     (fn [] (get @app-db :user [])))))
+ :user
+ (fn [app-db [_ required?]]
+   (go (let [hdrs (auth-headers @app-db)
+             response (<! (http/get (url-for-route routes/user-route) {:headers hdrs}))]
+         (case (:status response)
+           200 nil
+           401 (do
+                 (dispatch [:set-user-data (dissoc (:user-data @app-db) :user-data :token)])
+                 (if required?
+                   (dispatch [:route-to-login])))
+           500 (if required? (dispatch (events/show-generic-error))))))
+   (ra/make-reaction
+    (fn [] (get @app-db :user [])))))
 
 (reg-sub
  :following-users
@@ -417,28 +417,27 @@
  (fn [character-map [_ id]]
    (get character-map id)))
 
-
 (reg-sub-raw
-  ::char5e/character
-  (fn [app-db [_ id :as args]]
-    (let [int-id (if id (js/parseInt id))]
-      (if (some? int-id)
-        (go (dispatch [:set-loading true])
-            (let [response (<! (http/get (url-for-route
-                                           routes/dnd-e5-char-route
-                                           :id int-id)))]
-              (dispatch [:set-loading false])
-              (case (:status response)
-                200 (dispatch [::char5e/set-character
-                               int-id
-                               (char5e/from-strict (-> response :body))])
-                401 (dispatch [:route-to-login])
-                500 (dispatch (events/show-generic-error))))))
-      (ra/make-reaction
-       (fn []
-         (if int-id
-           (get-in @app-db [::char5e/character-map int-id] {})
-           (get @app-db :character)))))))
+ ::char5e/character
+ (fn [app-db [_ id :as args]]
+   (let [int-id (if id (js/parseInt id))]
+     (if (some? int-id)
+       (go (dispatch [:set-loading true])
+           (let [response (<! (http/get (url-for-route
+                                         routes/dnd-e5-char-route
+                                         :id int-id)))]
+             (dispatch [:set-loading false])
+             (case (:status response)
+               200 (dispatch [::char5e/set-character
+                              int-id
+                              (char5e/from-strict (-> response :body))])
+               401 (dispatch [:route-to-login])
+               500 (dispatch (events/show-generic-error))))))
+     (ra/make-reaction
+      (fn []
+        (if int-id
+          (get-in @app-db [::char5e/character-map int-id] {})
+          (get @app-db :character)))))))
 
 (reg-sub
  ::char5e/character-changed?
@@ -472,9 +471,9 @@
    (selected-plugin-options character)))
 
 #_(reg-sub
- ::char5e/template
- (fn [db _]
-   (:template db)))
+   ::char5e/template
+   (fn [db _]
+     (:template db)))
 
 (reg-sub
  ::char5e/built-template
@@ -553,44 +552,44 @@
    ::char5e/current-hit-points char5e/current-hit-points
    ::char5e/hit-point-level-bonus char5e/hit-point-level-bonus
    ::char5e/class-hit-point-level-bonus char5e/class-hit-point-level-bonus
-   ::char5e/initiative char5e/initiative 
-   ::char5e/passive-perception char5e/passive-perception 
-   ::char5e/character-name char5e/character-name 
-   ::char5e/proficiency-bonus char5e/proficiency-bonus 
-   ::char5e/save-bonuses char5e/save-bonuses 
-   ::char5e/saving-throws char5e/saving-throws 
-   ::char5e/race char5e/race 
+   ::char5e/initiative char5e/initiative
+   ::char5e/passive-perception char5e/passive-perception
+   ::char5e/character-name char5e/character-name
+   ::char5e/proficiency-bonus char5e/proficiency-bonus
+   ::char5e/save-bonuses char5e/save-bonuses
+   ::char5e/saving-throws char5e/saving-throws
+   ::char5e/race char5e/race
    ::char5e/subrace char5e/subrace
    ::char5e/sex char5e/sex
-   ::char5e/alignment char5e/alignment 
-   ::char5e/background char5e/background 
-   ::char5e/classes char5e/classes 
-   ::char5e/levels char5e/levels 
-   ::char5e/darkvision char5e/darkvision 
-   ::char5e/skill-profs char5e/skill-proficiencies 
+   ::char5e/alignment char5e/alignment
+   ::char5e/background char5e/background
+   ::char5e/classes char5e/classes
+   ::char5e/levels char5e/levels
+   ::char5e/darkvision char5e/darkvision
+   ::char5e/skill-profs char5e/skill-proficiencies
    ::char5e/skill-bonuses char5e/skill-bonuses
    ::char5e/skill-expertise char5e/skill-expertise
    ::char5e/tool-profs char5e/tool-proficiencies
    ::char5e/tool-expertise char5e/tool-expertise
-   ::char5e/tool-bonus-fn char5e/tool-bonus-fn 
-   ::char5e/weapon-profs char5e/weapon-proficiencies 
-   ::char5e/armor-profs char5e/armor-proficiencies 
+   ::char5e/tool-bonus-fn char5e/tool-bonus-fn
+   ::char5e/weapon-profs char5e/weapon-proficiencies
+   ::char5e/armor-profs char5e/armor-proficiencies
    ::char5e/resistances char5e/damage-resistances
    ::char5e/damage-vulnerabilities char5e/damage-vulnerabilities
-   ::char5e/damage-immunities char5e/damage-immunities 
-   ::char5e/immunities char5e/immunities 
-   ::char5e/condition-immunities char5e/condition-immunities 
-   ::char5e/languages char5e/languages 
+   ::char5e/damage-immunities char5e/damage-immunities
+   ::char5e/immunities char5e/immunities
+   ::char5e/condition-immunities char5e/condition-immunities
+   ::char5e/languages char5e/languages
    ::char5e/abilities char5e/ability-values
    ::char5e/race-ability-increases char5e/race-ability-increases
    ::char5e/subrace-ability-increases char5e/subrace-ability-increases
    ::char5e/ability-increases char5e/ability-increases
-   ::char5e/ability-bonuses char5e/ability-bonuses 
-   ::char5e/armor-class char5e/base-armor-class 
-   ::char5e/armor-class-with-armor char5e/armor-class-with-armor 
-   ::char5e/armor char5e/normal-armor-inventory 
-   ::char5e/magic-armor char5e/magic-armor-inventory 
-   ::char5e/all-armor-inventory char5e/all-armor-inventory 
+   ::char5e/ability-bonuses char5e/ability-bonuses
+   ::char5e/armor-class char5e/base-armor-class
+   ::char5e/armor-class-with-armor char5e/armor-class-with-armor
+   ::char5e/armor char5e/normal-armor-inventory
+   ::char5e/magic-armor char5e/magic-armor-inventory
+   ::char5e/all-armor-inventory char5e/all-armor-inventory
    ::char5e/spells-known char5e/spells-known
    ::char5e/spells-known-modes char5e/spells-known-modes
    ::char5e/spell-slots char5e/spell-slots
@@ -600,7 +599,7 @@
    ::char5e/spell-modifiers char5e/spell-modifiers
    ::char5e/spell-slot-factors char5e/spell-slot-factors
    ::char5e/total-spellcaster-levels char5e/total-spellcaster-levels
-   ::char5e/weapons char5e/normal-weapons-inventory 
+   ::char5e/weapons char5e/normal-weapons-inventory
    ::char5e/magic-weapons char5e/magic-weapons-inventory
    ::char5e/equipment char5e/normal-equipment-inventory
    ::char5e/custom-equipment char5e/custom-equipment
@@ -614,6 +613,7 @@
    ::char5e/actions char5e/actions
    ::char5e/image-url char5e/image-url
    ::char5e/image-url-failed char5e/image-url-failed
+   ::char5e/player-name char5e/player-name
    ::char5e/faction-image-url char5e/faction-image-url
    ::char5e/faction-image-url-failed char5e/faction-image-url-failed
    ::char5e/personality-trait-1 char5e/personality-trait-1
@@ -661,10 +661,10 @@
 
 (defn armor-calculations [ac-fn armor shields]
   (for [armor-item (conj armor nil)
-         shield (conj shields nil)]
-     {:ac (ac-fn armor-item shield)
-      :armor armor-item
-      :shield shield}))
+        shield (conj shields nil)]
+    {:ac (ac-fn armor-item shield)
+     :armor armor-item
+     :shield shield}))
 
 (reg-sub
  ::char5e/best-armor-combo

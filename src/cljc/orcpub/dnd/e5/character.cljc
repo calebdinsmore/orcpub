@@ -705,6 +705,9 @@
 (defn flaws [built-char]
   (get-prop built-char ::flaws))
 
+(defn dong-length [built-char]
+  (get-prop built-char ::dong-length))
+
 (defn description [built-char]
   (get-prop built-char ::description))
 
