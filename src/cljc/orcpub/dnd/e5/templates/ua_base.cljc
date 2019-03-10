@@ -1,5 +1,5 @@
 (ns orcpub.dnd.e5.templates.ua-base
-  (:require [orcpub.template :as t]
+  #_(:require [orcpub.template :as t]
             [orcpub.common :as common]
             [orcpub.modifiers :as mods]
             [orcpub.entity-spec :as es]

@@ -105,7 +105,11 @@
    
    [:.i
     {:font-style :italic}]
-   
+
+   [:.wsp-prw
+    {:white-space "pre-wrap"
+     :display "block"}]
+
    [:.f-w-n
     {:font-weight :normal}]
    [:.f-w-b
@@ -848,11 +852,11 @@
 
     [:select
      {:font-family font-family
-      :cursor :pointer}]
+      :color "white"
+      :background-color :transparent}]
 
     [:*:focus
      {:outline 0}]
-    
 
     [:.sticky-header
      {:top 0
@@ -1149,6 +1153,11 @@
 
     [:.app.light-theme
      {:background-image "linear-gradient(182deg, #FFFFFF, #DDDDDD)"}
+
+     [:select
+      {:font-family font-family
+       :color "black";
+       :background-color :transparent}]
 
      [:.item-list
       {:border-top "1px solid rgba(0,0,0,0.5)"}]

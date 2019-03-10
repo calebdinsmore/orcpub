@@ -36,7 +36,7 @@
     [:div
      (svg-icon-2 icon 64 "dark")
      [:div
-      [:span.splash-button-title-prefix "DnD 5e "] [:span title]]]]])
+      [:span.splash-button-title-prefix "D&D 5e "] [:span title]]]]])
 
 (defn legal-footer []
   [:div.m-l-15.m-b-10.m-t-10.t-a-l
@@ -117,7 +117,7 @@
        routes/dnd-e5-spell-list-page-route)
       (splash-page-button
        "Monsters"
-       "hydra"
+       "spiked-dragon-head"
        routes/dnd-e5-monster-list-page-route)
       (splash-page-button
        "Items"
@@ -137,7 +137,7 @@
        routes/dnd-e5-encounter-builder-page-route)
       (splash-page-button
        "Monster Builder"
-       "ifrit"
+       "anatomy"
        routes/dnd-e5-monster-builder-page-route)
       (splash-page-button
        "Spell Builder"
