@@ -528,7 +528,7 @@
            :route routes/dnd-e5-class-builder-page-route}
           {:name "Subclass Builder"
            :route routes/dnd-e5-subclass-builder-page-route}
-          {:name "Elritch Invocation Builder"
+          {:name "Eldritch Invocation Builder"
            :route routes/dnd-e5-invocation-builder-page-route}
           {:name "Selection Builder"
            :route routes/dnd-e5-selection-builder-page-route}]]]]]]))
@@ -1026,8 +1026,13 @@
     (fn []
       [:div.t-a-r
        [:div.orange.pointer.underline
-        {:on-click #(swap! expanded? not)}
+        {:on-click #(swap! expanded? not)
+         :title "Development - Debug Info" }
         [:i.fa.fa-bug {:class-name (if @expanded? "white")}]]
+       [:div.orange.pointer.underline
+        {:on-click (make-event-handler ::e5/export-all-plugins-pretty-print)
+         :title "Development - Download all Orcbrews as Pretty Print, if you click this button it will take a long time to generate the orcbrew.  Click and wait."}
+        [:i.fa.fa-cloud-download]]
        (if @expanded?
          [:textarea.m-t-5
           {:read-only true
@@ -1564,7 +1569,7 @@
            [:div.legal-footer
             [:p "© 2019 OrcPub" [:span.m-l-20 "Contact: " [:a {:href "mailto:redorc@orcpub.com"} "redorc@orcpub.com"]]]
             [:p "Wizards of the Coast, Dungeons & Dragons, D&D, and their logos are trademarks of Wizards of the Coast LLC in the United States and other countries. © 2019 Wizards. All Rights Reserved. OrcPub.com is not affiliated with, endorsed, sponsored, or specifically approved by Wizards of the Coast LLC."]]]
-          [debug-data]]]])]))
+            [debug-data]]]])]))
 
 (def row-style
   {:border-bottom "1px solid rgba(255,255,255,0.5)"})
@@ -5785,6 +5790,12 @@
        :option-pack
        race
        "m-l-5 m-b-20"]]
+     [:div.m-b-20
+       [:div.f-w-b
+        "Description"]
+       [textarea-field
+        {:value (get race :help)
+         :on-change #(dispatch [::races/set-race-prop :help %])}]]
      [:div.m-b-20.flex.flex-wrap
       [:div.m-r-5
        [labeled-dropdown
@@ -5920,6 +5931,12 @@
        :option-pack
        background
        "m-l-5 m-b-20"]]
+     [:div.m-b-20
+       [:div.f-w-b
+        "Description"]
+       [textarea-field
+        {:value (get background :help)
+         :on-change #(dispatch [::bg/set-background-prop :help %])}]]
      [:div [background-skill-proficiencies background]]
      [:div [background-languages background]]
      [:div [background-tool-proficiencies background]]
@@ -6100,21 +6117,32 @@
                     :value nm})
                  @(subscribe [::monsters/alignments]))
          :value (or alignment "neutral")
-         :on-change #(dispatch [::monsters/set-monster-prop :alignment %])}]]
+         :on-change #(dispatch [::monsters/set-monster-prop :alignment %])}]]]
+     [:div.flex.w-100-p.flex-wrap
       [:div.flex-grow-1.m-b-20.m-l-5
        [labeled-dropdown
         "Armor Class"
         {:items (map
-                 value-to-item
-                 (range 5 25))
+                  value-to-item
+                  (range 5 25))
          :value (or armor-class 10)
-         :on-change #(dispatch [::monsters/set-monster-prop :armor-class (js/parseInt %)])}]]]
-     [:div.m-b-20
+         :on-change #(dispatch [::monsters/set-monster-prop :armor-class (js/parseInt %)])}]]
+      [monster-input-field
+       "Armor Notes"
+       :armor-notes
+       monster
+       "m-l-5 m-b-20 flex-grow-1 notes"]]
+     [:div.flex.w-100-p.flex-wrap
       [monster-input-field
        "Speed"
        :speed
        monster
-       "m-l-5 m-b-20"]]
+       "m-l-5 m-b-20 flex-grow-1"]
+      [monster-input-field
+       "Senses"
+       :senses
+       monster
+       "m-l-5 m-b-20 flex-grow-1 senses"]]
      [:div.m-b-20
       [:div.f-s-24.f-w-b "Hit Points"]
       [:div.flex.w-100-p.flex-wrap
@@ -6889,6 +6917,12 @@
          (dispatch [::e5/import-plugin nm text]))))
     (.readAsText reader file)))
 
+(defn capitalize-words
+  [s]
+  (->> (s/split (str s) #"\b")
+       (map s/capitalize)
+       s/join))
+
 (defn my-content-type []
   (let [expanded? (r/atom false)]
     (fn [source-name plugin type-name type-key icon add-event edit-event delete-event plural]
@@ -6910,7 +6944,7 @@
                                       final-type-name (if plural
                                                         (if (not= 1 num) plural type-name)
                                                         (str type-name (if (not= 1 num) "s")))]
-                                  (str num " " (common/safe-capitalize final-type-name)))]]
+                                  (str num " " (capitalize-words final-type-name)))]]
           [:div.orange.pointer
            [:i.fa.m-r-5
             {:class-name (if @expanded? "fa-caret-up" "fa-caret-down")}]
@@ -7102,7 +7136,7 @@
          [:div.bg-lighter.p-10
           [:div.flex.justify-cont-end.uppercase.align-items-c.m-b-10
            [:button.form-button.m-l-5
-            {:on-click (make-event-handler ::e5/export-plugin name plugin)}
+            {:on-click (make-event-handler ::e5/export-plugin-pretty-print name plugin)}
             "export"]
            [:button.form-button.m-l-5
             {:on-click (make-event-handler ::e5/delete-plugin name)}
